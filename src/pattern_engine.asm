@@ -266,8 +266,8 @@ tdemo_cont
     call         write_eeprom
 #endif
     
-    call         display_pattern_id
-    call         display_pattern_id
+;    call         display_pattern_id
+;    call         display_pattern_id
     return
 
 
@@ -353,51 +353,6 @@ ptop
     movwf        psize                  ;4rgb
 
 ploop0
-;
-;   Check for IR command in
-;
-    
-    btfss        IR_in_good,0
-    goto         button_check
-
-blinkie_check
-    movlw        0x07              ; blinkines use address 0x07 (Experimental)
-    subwf        address,w
-    btfss        STATUS,Z
-    goto         remote_check    
-
-    call         set_pattern
-    clrf         IR_in_good
-    goto         ptop
-
-remote_check
-    movf         address,f         ; remote giving "0" for address (TV)?
-    btfss        STATUS,Z
-    goto         button_check
-
-    movlw        0x20              ; remote curser right (pattern ++)
-    subwf        command,w
-    btfsc        STATUS,Z
-    call         next_pattern
-
-    movlw        0x21              ; remote curser left (pattern --)
-    subwf        command,w
-    btfsc        STATUS,Z
-    call         past_pattern
-
-    movlw        0x00              ; remote "0" key  (pattern = 0)
-    subwf        command,w
-    btfsc        STATUS,Z
-    clrf         pattern
-
-    movlw        0x0c              ; remote on/off key (togle demo mode!)
-    subwf        command,w
-    btfsc        STATUS,Z
-    call         toggle_demo
-
-    clrf         IR_in_good
-    goto         ptop
-
 button_check
 ; ploop1
     
@@ -429,8 +384,8 @@ ploop1down
     call         display_pattern_id
     call         display_pattern_id
     goto         ploop1a
-ploop2
 
+ploop2
 #ifdef PATTERN1
     movlw        0x01              ; pattern1
     subwf        tbltype,w
@@ -737,13 +692,7 @@ ploop2
 
 pattern_return
 
-;   make sure we are not sending a IR signel
-    movf        scount,w                    ; F22
-    addlw       0                           ; F23
-    btfss       STATUS,Z                    ; F24
-    goto        ploop3
-
-;   count down till net IR signel
+;   count down till next pattern change
     btfss       nextf,1
     goto        ploop3
 
@@ -755,24 +704,14 @@ pattern_return
     goto        ptop
    
 ploop2a
-;   send an IR signel
-#ifdef ENABLE_IR
-    movlw       0x07                        ; address 0x07 "Experimental"
-    movwf       out_address
-    movfw       out_pattern
-    movwf       out_command                 ; copy out_pettern
-
-    call        rf_command_out 
-#endif
-
 ploop3
     decfsz  psize,f     ;check for end of pattern (4rgb)
     goto    ploop0
 
     goto        ptop
 
-#define BRIGHT1 0x40
-#define BRIGHT2 0xA0
+#define BRIGHT1 0x10
+#define BRIGHT2 0x50
 
 #ifdef RANDOM
 
@@ -793,89 +732,3 @@ gen_random
    MOVWF   random
    return
 #endif
-
-#ifdef M8X16
-;**********************************************************************
-shift_left
-;**********************************************************************
-;
-;  shift the in1f->in1e->in1d->....->in1->in0
-;
-
-
-    movlw        LOW in0        ; shift down in1f->in0
-    movwf        FSR0L
-    movlw        HIGH in0
-    movwf        FSR0H
-
-    movlw        0x1f
-    movwf        fcount1
-
-t23_loop
-
-     MOVIW INDF0++   ; inc INDFO (don't use W)
-     MOVIW INDF0--   ; get W, dec INDF0
-     MOVWI INDF0++   ; put W, inc INDF0
-      
-    decfsz       fcount1,f
-    goto         t23_loop
-
-    return
-#endif
-    
-#ifdef M5X7
-;**********************************************************************
-shift_left
-;**********************************************************************
-;
-;  shift left  in2->in0,in3->in1,...in8->in6, in9->in7
-;
-    var fcount1
-
-    movlw        LOW in0        ; shift down in1f->in0
-    movwf        FSR0L
-    movlw        HIGH in0
-    movwf        FSR0H
-
-    movlw        0x09
-    movwf        fcount1
-
-t23_loop
-
-     MOVIW 2[FSR0]   ; get inx+2 in W
-     MOVWI INDF0++   ; put W, inc INDF0
-      
-    decfsz       fcount1,f
-    goto         t23_loop
-
-    return
-#endif
-    
-#ifdef M7X8
-;**********************************************************************
-shift_left
-;**********************************************************************
-;
-;  shift left  in1->in0,in2->in1,...in7->in8
-;
-    var fcount1
-
-    movlw        LOW in0        ; shift down in1f->in0
-    movwf        FSR0L
-    movlw        HIGH in0
-    movwf        FSR0H
-
-    movlw        0x07
-    movwf        fcount1
-
-t23_loop
-
-     MOVIW 1[FSR0]   ; get inx+1 in W
-     MOVWI INDF0++   ; put W, inc INDF0
-
-    decfsz       fcount1,f
-    goto         t23_loop
-
-    return
-#endif
-

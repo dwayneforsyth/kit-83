@@ -65,15 +65,15 @@
 
 #define PATTERN6
 #define PATTERN7
-#define PATTERN8
 #define PATTERN12
+#define PATTERN28
 #define FLIPBYTE
 #define RANDOM
 #define DISPLAY_1BIT_D
 #define NEWEEPROM
 #include <P16F18313.inc>       ; processor specific variable definitions
 ; LIST P=P16F18313
-NUM_TAB     equ d'21'   ;highest pattern table number
+NUM_TAB     equ d'24'   ;highest pattern table number
 STROBE_LINES equ 0x05
 DELAYTIMER equ 0x3A
 MAX_IN_STORE equ d'3'
@@ -143,11 +143,22 @@ display_pattern_id
     banksel      pattern
     incf         pattern,w      ; W = pattern + 1
     
-    call         flipbyte
+;    call         flipbyte
     movwf        in1
 
     clrf         in0
     clrf         in2
+    
+    bcf          STATUS,C
+    rlf          in1,1
+    rlf          in0,1
+    bcf          STATUS,C
+    rlf          in1,1
+    rlf          in0,1
+    bcf          STATUS,C
+    rlf          in1,1
+    rlf          in0,1
+    
     movlw        b'11000000'
     btfsc        demo_mode,0
     movwf        in2 
@@ -170,8 +181,8 @@ FSR EQU FSR0L
 #include "pattern_engine.asm"
 #include "pattern_06.asm"
 #include "pattern_07.asm"
-#include "pattern_08.asm"
 #include "pattern_12.asm"
+#include "pattern_28.asm"
 ;#include "flipbyte.asm"
 ;#include "ransom.asm"
 #include "display_1bit_starry.asm"

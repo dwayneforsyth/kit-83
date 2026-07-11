@@ -28,7 +28,7 @@ table_type_7
 ;
 ;  ABBCCCCC
 ;
-;  A = shire Right/Left
+;  A = shift Right/Left
 ;  BB = two bit intensity to shift on
 ;  CCCCC = Number of shifts to loop
 ;
@@ -63,118 +63,113 @@ t7_loop
 ;   set LED 1
 
 
-	movfw		 A5_A1_reg        ; 16 -> 17
+	movfw		 A5_A1_reg        ; 15 -> 16
 	movwf		 A1_A0_reg
 
-	movfw	 	 A2_A0_reg        ; 15 -> 16
+	movfw	 	 A2_A0_reg        ; 14 -> 15
 	movwf		 A5_A1_reg
 
-	movfw		 A1_A2_reg        ; 14 -> 15
+	movfw		 A1_A2_reg        ; 13 -> 14
 	movwf	 	 A2_A0_reg
 
-	movfw		 A2_A1_reg        ; 13 -> 14
+	movfw		 A2_A1_reg        ; 12 -> 13
 	movwf		 A1_A2_reg 
 
-	movfw	 	 A2_A5_reg        ; 12 -> 13
+	movfw	 	 A2_A5_reg        ; 11 -> 12
 	movwf		 A2_A1_reg
 
-	movfw		 A0_A4_reg        ; 11 -> 12
+	movfw		 A0_A4_reg        ; 10 -> 11
 	movwf	 	 A2_A5_reg
 
-	movfw		 A1_A5_reg        ; 10 -> 11
+	movfw		 A1_A5_reg        ; 09 -> 10
 	movwf		 A0_A4_reg
 
-	movfw	 	 A4_A1_reg        ; 09 -> 10
+	movfw	 	 A4_A1_reg        ; 08 -> 09
 	movwf		 A1_A5_reg 
 
-        movfw		 A0_A5_reg        ; 08 -> 09
+        movfw		 A0_A5_reg        ; 07 -> 08
 	movwf	 	 A4_A1_reg
 
-	movfw		 A5_A4_reg        ; 07 -> 08
+	movfw		 A5_A4_reg        ; 06 -> 07
         movwf		 A0_A5_reg
 
-	movfw	 	 A1_A4_reg        ; 06 -> 07
+	movfw	 	 A1_A4_reg        ; 05 -> 06
 	movwf		 A5_A4_reg 
 
-	movfw		 A2_A4_reg        ; 05 -> 06
+	movfw		 A2_A4_reg        ; 04 -> 05
 	movwf	 	 A1_A4_reg
 
-	movfw		 A5_A0_reg        ; 04 -> 05
+	movfw		 A5_A0_reg        ; 03 -> 04
 	movwf		 A2_A4_reg
 
-	movfw		 A5_A2_reg        ; 03 -> 04
+	movfw		 A5_A2_reg        ; 02 -> 03
 	movwf		 A5_A0_reg 
 
-	movfw		 A4_A0_reg        ; 02 -> 03
+	movfw		 A4_A0_reg        ; 01 -> 02
 	movwf		 A5_A2_reg
 
-	movfw		 A0_A2_reg        ; 01 -> 02
+	movfw		 A0_A2_reg        ; 00 -> 01
 	movwf		 A4_A0_reg
 
-	movfw		 A4_A2_reg        ; 00 -> 01
-	movwf		 A0_A2_reg
-
-	clrf		 A4_A2_reg        ; new -> 00
+	clrf		 A0_A2_reg        ; new -> 00
         movlw            BRIGHT1
         btfsc            in0,5
-        addwf            A4_A2_reg,f
+        addwf            A0_A2_reg,f
         movlw            BRIGHT2
         btfsc            in0,6
-        addwf            A4_A2_reg,f
+        addwf            A0_A2_reg,f
 
         goto         t7_cont
 ;
 ;   set LED 19
 t7_set19
-	movfw		 A0_A2_reg        ; 01 -> 00
-	movwf		 A4_A2_reg
 
-	movfw		 A4_A0_reg        ; 02 -> 01
+	movfw		 A4_A0_reg        ; 01 -> 00
 	movwf		 A0_A2_reg
 
-	movfw		 A5_A2_reg        ; 03 -> 02
+	movfw		 A5_A2_reg        ; 02 -> 01
 	movwf		 A4_A0_reg
 
-	movfw		 A5_A0_reg        ; 04 -> 03
+	movfw		 A5_A0_reg        ; 03 -> 02
     movwf		 A5_A2_reg
 
-	movfw		 A2_A4_reg        ; 05 -> 04
+	movfw		 A2_A4_reg        ; 04 -> 03
 	movwf		 A5_A0_reg
 
-	movfw	 	 A1_A4_reg        ; 06 -> 05
+	movfw	 	 A1_A4_reg        ; 05 -> 04
 	movwf		 A2_A4_reg 
 
-	movfw		 A5_A4_reg        ; 07 -> 06
+	movfw		 A5_A4_reg        ; 06 -> 05
 	movwf	 	 A1_A4_reg
 
-    movfw		 A0_A5_reg        ; 08 -> 07
+    movfw		 A0_A5_reg        ; 07 -> 06
 	movwf		 A5_A4_reg 
 
-	movfw	 	 A4_A1_reg        ; 09 -> 08
+	movfw	 	 A4_A1_reg        ; 08 -> 07
     movwf		 A0_A5_reg
 
-	movfw		 A1_A5_reg        ; 10 -> 09
+	movfw		 A1_A5_reg        ; 09 -> 08
 	movwf	 	 A4_A1_reg
 
-	movfw		 A0_A4_reg        ; 11 -> 10
+	movfw		 A0_A4_reg        ; 10 -> 09
 	movwf		 A1_A5_reg
 
-	movfw	 	 A2_A5_reg        ; 12 -> 11
+	movfw	 	 A2_A5_reg        ; 11 -> 10
 	movwf		 A0_A4_reg
 
-	movfw		 A2_A1_reg        ; 13 -> 12
+	movfw		 A2_A1_reg        ; 12 -> 11
 	movwf	 	 A2_A5_reg
 
-	movfw		 A1_A2_reg        ; 14 -> 13
+	movfw		 A1_A2_reg        ; 13 -> 12
 	movwf		 A2_A1_reg
 
-	movfw	 	 A2_A0_reg        ; 15 -> 14
+	movfw	 	 A2_A0_reg        ; 14 -> 13
 	movwf		 A1_A2_reg
 
-	movfw		 A5_A1_reg        ; 16 -> 15
+	movfw		 A5_A1_reg        ; 15 -> 14
 	movwf	 	 A2_A0_reg
 
-	movfw		 A1_A0_reg        ; 17 -> 16
+	movfw		 A1_A0_reg        ; 16 -> 15
 	movwf		 A5_A1_reg
 
 	clrf		 A1_A0_reg
@@ -193,7 +188,7 @@ t7_cont
 ;   This is a quick hack, because without this button presses are not seen for minutes
 ;   This early exit might impact the pattern getting displayed.
 ;
-    btfsc        button,0    ; if putton pressed show pattern id
+    btfsc        button,1    ; if putton pressed show pattern id
     goto         t7_return
 
     btfsc        IR_in_good,0

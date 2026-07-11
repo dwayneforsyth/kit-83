@@ -48,7 +48,7 @@ cf8_loop2a
 	movwf		 A0_A4_reg        ; 11
 	movwf	 	 A1_A0_reg        ; 12
 ;	movwf		 A0_A1_reg        ; 13
-	movwf		 A4_A2_reg        ; 14
+;	movwf		 A4_A2_reg        ; 14
 	movwf	 	 A2_A4_reg        ; 15 
 	movwf		 A1_A2_reg        ; 16 
 	movwf		 A2_A1_reg        ; 17 

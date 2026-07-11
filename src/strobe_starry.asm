@@ -79,7 +79,7 @@ display_cycle3 ; DC
 
     LedOut  A4_A0_reg,Ax_dir,0    ;LED     A4-A0
     LedOut  A4_A1_reg,Ax_dir,1    ;LED     A4-A1
-    LedOut  A4_A2_reg,Ax_dir,2    ;LED     A4-A2
+    bsf     Ax_dir,2  
     bsf     Ax_dir,5  
 
     movf    Ax_dir,w      ;set portA direction
